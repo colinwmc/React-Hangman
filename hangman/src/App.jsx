@@ -1,9 +1,13 @@
 import { useState } from 'react'
+import clsx from 'clsx';
 import { languages } from './languages'
 
 function App() {
 
   const [word, setWord] = useState('react');
+  const [guessedLetters, setGuessedLetters] = useState([]);
+
+  let wrongGuesses = guessedLetters.filter(letter=>!word.includes(letter)).length;
 
   const alphabet = "abcdefghijklmnopqrstuvwxyz";
 
@@ -15,15 +19,27 @@ function App() {
 
   const letterSquares = word.split('').map((letter, index) => {
     return (
-      <span key={index} className='letter'>{letter.toUpperCase()}</span>
+      <span key={index} className='letter'>{guessedLetters.includes(letter) ? letter.toUpperCase() : ''}</span>
     )
   });
 
   const keys = alphabet.split('').map((letter, index) => {
     return (
-      <button key={index} className='key'>{letter.toUpperCase()}</button>
+      <button key={index}
+        className={clsx('key',
+          word.includes(letter) && guessedLetters.includes(letter) && 'correct',
+          !word.includes(letter) && guessedLetters.includes(letter) && 'incorrect')}
+        onClick={() => guessLetter(letter)}
+      >{letter.toUpperCase()}</button>
     )
-  })
+  });
+
+  function guessLetter(letter) {
+    if (!guessedLetters.includes(letter)) {
+      setGuessedLetters(prev => ([...prev, letter]));
+    }
+
+  }
 
   return (
     <main>

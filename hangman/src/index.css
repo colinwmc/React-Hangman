@@ -125,6 +125,14 @@ main {
       font-family: "Hanken Grotesk", Arial, sans-serif;
       cursor: pointer;
     }
+
+    .correct {
+      background-color: #10A95B;
+    }
+
+    .incorrect {
+      background-color: #EC5D49;
+    }
   }
 
   .new-game {
