@@ -39,7 +39,6 @@ main {
   }
 
   .status {
-    background-color: #10A95B;
     color: #F9F4DA;
     width: 352px;
     height: 59px;
@@ -52,14 +51,14 @@ main {
     .status-line-1 {
       font-size: 20px;
       font-weight: 500;
-      margin-top: 0;
-      margin-bottom: 0.5rem;
+      margin: 0;
     }
 
     .status-line-2 {
       font-size: 16px;
       font-weight: 500;
       margin: 0;
+      margin-top: 0.5rem;
     }
   }
 
@@ -79,7 +78,22 @@ main {
       font-size: 12px;
       text-align: center;
       padding: 4.5px;
+      position: relative;
     }
+
+    .lost::before {
+    content: "💀";
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    font-size: 0.85rem;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+}
   }
 
   .word-box {
