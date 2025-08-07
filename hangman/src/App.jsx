@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import clsx from 'clsx';
-import { languages } from './languages'
+import { languages } from './languages';
+import { statuses } from './util';
 
 function App() {
 
@@ -13,18 +14,7 @@ function App() {
   let gameOver = gameWon || gameLost;
 
   const alphabet = "abcdefghijklmnopqrstuvwxyz";
-  const statuses = [
-    { top: '', bottom: '', style: { backgroundColor: 'transparent' } },
-    { top: 'Goodbye HTML', bottom: '', style: { backgroundColor: '#7A5EA7' } },
-    { top: '', bottom: '', style: { backgroundColor: 'transparent' } },
-    { top: 'Goodbye JS', bottom: '😭', style: { backgroundColor: '#7A5EA7' } },
-    { top: '', bottom: '', style: { backgroundColor: 'transparent' } },
-    { top: '', bottom: '', style: { backgroundColor: 'transparent' } },
-    { top: '', bottom: '', style: { backgroundColor: 'transparent' } },
-    { top: '', bottom: '', style: { backgroundColor: 'transparent' } },
-    { top: 'Game Over!', bottom: 'You lose! Better start learning Assembly 😭', style: { backgroundColor: '#BA2A2A' } },
-    { top: 'You Win!', bottom: 'Well done! 🎉', style: { backgroundColor: '#10A95B' } }
-  ];
+
   let statusIndex = gameWon ? statuses.length - 1 : wrongGuesses;
 
   const languageChips = languages.map((language, index) => {
@@ -46,6 +36,7 @@ function App() {
           word.includes(letter) && guessedLetters.includes(letter) && 'correct',
           !word.includes(letter) && guessedLetters.includes(letter) && 'incorrect')}
         onClick={() => guessLetter(letter)}
+        disabled={gameOver}
       >{letter.toUpperCase()}</button>
     )
   });

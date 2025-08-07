@@ -140,6 +140,11 @@ main {
       cursor: pointer;
     }
 
+    button.key:disabled {
+    cursor: not-allowed;
+    opacity: 0.5
+}
+
     .correct {
       background-color: #10A95B;
     }
