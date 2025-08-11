@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import clsx from 'clsx';
 import { languages } from './languages';
-import { statuses } from './util';
+import { statuses, pickWord } from './util';
+import Confetti from "react-confetti"
 
 function App() {
 
-  const [word, setWord] = useState('react');
+  const [word, setWord] = useState(() => pickWord());
   const [guessedLetters, setGuessedLetters] = useState([]);
 
   let wrongGuesses = guessedLetters.filter(letter => !word.includes(letter)).length;
@@ -25,7 +26,7 @@ function App() {
 
   const letterSquares = word.split('').map((letter, index) => {
     return (
-      <span key={index} className='letter'>{guessedLetters.includes(letter) ? letter.toUpperCase() : ''}</span>
+      <span key={index} className={clsx('letter', !guessedLetters.includes(letter) && gameLost && 'missed')}>{guessedLetters.includes(letter) || gameLost ? letter.toUpperCase() : ''}</span>
     )
   });
 
@@ -37,6 +38,8 @@ function App() {
           !word.includes(letter) && guessedLetters.includes(letter) && 'incorrect')}
         onClick={() => guessLetter(letter)}
         disabled={gameOver}
+        aria-label={`Letter ${letter}`}
+        aria-disabled={guessedLetters.includes(letter)}
       >{letter.toUpperCase()}</button>
     )
   });
@@ -48,13 +51,24 @@ function App() {
 
   }
 
+  function reset() {
+    setGuessedLetters([]);
+    setWord(pickWord());
+  }
+
   return (
     <main>
+      {gameWon && <Confetti
+        width={window.innerWidth - 1}
+        height={window.innerHeight - 1}
+        recycle={false}
+        numberOfPieces={1000}
+      />}
       <header>
         <h1 className='title'>Assembly: Endgame</h1>
         <p className='instructions'>Guess the word in under 8 attempts to keep the programming world safe from Assembly!</p>
       </header>
-      <section className='status' style={statuses[statusIndex].style}>
+      <section aria-live="polite" role='status' className='status' style={statuses[statusIndex].style}>
         <h2 className='status-line-1'>{statuses[statusIndex].top}</h2>
         {statuses[statusIndex].bottom.length > 0 && <h3 className='status-line-2'>{statuses[statusIndex].bottom}</h3>}
       </section>
@@ -64,10 +78,20 @@ function App() {
       <section className='word-box'>
         {letterSquares}
       </section>
+      <section
+        className="sr-only"
+        aria-live="polite"
+        role="status"
+      >
+        <p>Current word: {word.split("").map(letter =>
+          guessedLetters.includes(letter) ? letter + "." : "blank.")
+          .join(" ")}</p>
+
+      </section>
       <section className='keyboard'>
         {keys}
       </section>
-      {gameOver && <button className="new-game">New Game</button>}
+      {gameOver && <button className="new-game" onClick={reset}>New Game</button>}
     </main>
   )
 }

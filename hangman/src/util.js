@@ -1,4 +1,5 @@
 import { languages } from "./languages";
+import { words } from "./words";
 
 export function getFarewellText(language) {
     const options = [
@@ -31,3 +32,7 @@ export const statuses = [
     { top: 'Game Over!', bottom: 'You lose! Better start learning Assembly 😭', style: { backgroundColor: '#BA2A2A' } },
     { top: 'You Win!', bottom: 'Well done! 🎉', style: { backgroundColor: '#10A95B' } }
 ];
+
+export function pickWord(){
+    return words[Math.floor(Math.random()*(words.length - 1))]
+}
